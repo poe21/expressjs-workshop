@@ -33,33 +33,33 @@ app.get('/calculator/:operation', function (request, response) {
   var num1 = request.query.num1;
   var num2 = request.query.num2;
   if (request.params.operation === "add") {
-    response.send({
+    response.send(JSON.stringify({
       operation: request.params.operation,
-      firstNumber: num1,
-      secondNumber: num2,
-      total: JSON.stringify(add(num1, num2))
-    });
+      firstNumber: Number(num1),
+      secondNumber: Number(num2),
+      total: add(num1, num2)
+    }));
   } else if (request.params.operation === "sub") {
-    response.send({
+    response.send(JSON.stringify({
       operation: request.params.operation,
-      firstNumber: num1,
-      secondNumber: num2,
-      total: JSON.stringify(sub(num1, num2))
-    });
+      firstNumber: Number(num1),
+      secondNumber: Number(num2),
+      total: sub(num1, num2)
+    }));
   } else if (request.params.operation === "mult") {
-    response.send({
+    response.send(JSON.stringify({
       operation: request.params.operation,
-      firstNumber: num1,
-      secondNumber: num2,
-      total: JSON.stringify(mult(num1, num2))
-    });
+      firstNumber: Number(num1),
+      secondNumber: Number(num2),
+      total: mult(num1, num2)
+    }));
   } else if (request.params.operation === "div") {
-    response.send({
+    response.send(JSON.stringify({
       operation: request.params.operation,
-      firstNumber: num1,
-      secondNumber: num2,
-      total: JSON.stringify(div(num1, num2))
-    });
+      firstNumber: Number(num1),
+      secondNumber: Number(num2),
+      total: div(num1, num2)
+    }));
   } else {
     response.status(400).send("<h1>Error 400: Bad request. Please enter a valid operation such as: add, sub, mult or div.</h1>");
   }
