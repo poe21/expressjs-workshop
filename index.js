@@ -5,8 +5,9 @@ app.get('/hello', function (req, res) {
   res.send('<h1>Hello World!</h1>');
 });
 
-
-
+app.get('/hello/:name', function (request, response) {
+  response.send('<h1>Hello '+ request.params.name + " !</h1>");
+});
 
 
 /* YOU DON'T HAVE TO CHANGE ANYTHING BELOW THIS LINE :) */
