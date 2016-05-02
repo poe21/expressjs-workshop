@@ -1,5 +1,13 @@
 var express = require('express');
+var mysql = require('mysql');
 var app = express();
+
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'poe211',
+  password : '',
+  database: 'reddit'
+});
 
 // Exercise 1
 app.get('/hello', function (req, res) {
@@ -39,6 +47,48 @@ app.get('/calculator/:operation', function (request, response) {
   } else {
     response.status(400).send("<h1>Error 400: Bad request. Please enter a valid operation such as: add, sub, mult or div.</h1>");
   }
+});
+
+// Exercise 4
+
+function getHomepage(callback) {
+  connection.query(`SELECT posts.id, posts. title, posts.url, posts.createdAt, posts.userId, 
+    users.username FROM posts JOIN users ON posts.userId=users.id ORDER BY createdAt DESC LIMIT 5`
+    , function(err, res) {
+    if (err) {
+      callback(err);
+    }
+    else {
+      callback(null, res);
+    }
+  });
+}
+
+app.get('/posts', function(request, response) {
+  getHomepage(function(err, posts) {
+    if (err) {
+      response.status(500).send('oops try again later!');
+    } else {
+      var allPosts = posts.map(function(post) {
+        return `
+          <li class="content-item">
+            <h2 class="content-item__title">
+              <a href="${post.url}">${post.title}</a>
+            </h2>
+            <p>Created by ${post.username}</p>
+          </li>`;
+      });
+      
+      response.send(`
+        <div id="contents">
+          <h1>List of contents</h1>
+          <ul class="contents-list">
+            ${allPosts.join('')}
+          </ul>
+        </div>
+      `);
+    }
+  });
 });
 
 /* YOU DON'T HAVE TO CHANGE ANYTHING BELOW THIS LINE :) */
