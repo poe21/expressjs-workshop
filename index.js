@@ -1,6 +1,7 @@
 var express = require('express');
 var mysql = require('mysql');
 var app = express();
+var path = require('path');
 
 var connection = mysql.createConnection({
   host     : 'localhost',
@@ -89,6 +90,12 @@ app.get('/posts', function(request, response) {
       `);
     }
   });
+});
+
+// Exercise 5
+
+app.get('/createContent', function(request, response) {
+  response.sendFile(path.join(__dirname + '/form.html'));
 });
 
 /* YOU DON'T HAVE TO CHANGE ANYTHING BELOW THIS LINE :) */
