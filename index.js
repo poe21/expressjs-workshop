@@ -13,52 +13,28 @@ app.get('/hello/:name', function (request, response) {
 
 // Exercise 3
 
-function add(num1, num2) {
-  return parseInt(num1, 10) + parseInt(num2, 10);
-}
-
-function mult(num1, num2) {
-  return parseInt(num1, 10) * parseInt(num2, 10);
-}
-
-function div(num1, num2) {
-  return parseInt(num1, 10) / parseInt(num2, 10);
-}
-
-function sub(num1, num2) {
-  return parseInt(num1, 10) - parseInt(num2, 10);
+function operation(op, num1, num2) {
+  if (op === "add") {
+    return num1 + num2;
+  } else if (op === "sub") {
+    return num1 - num2;
+  } else if (op === "mult") {
+    return num1 * num2;
+  } else if (op === "div") {
+    return num1 / num2;
+  }
 }
 
 app.get('/calculator/:operation', function (request, response) {
-  var num1 = request.query.num1;
-  var num2 = request.query.num2;
-  if (request.params.operation === "add") {
+  var op = request.params.operation;
+  var num1 = parseInt(request.query.num1, 10);
+  var num2 = parseInt(request.query.num2, 10);
+  if (op === "add" || op === "sub" || op === "mult" || op === "div") {
     response.send(JSON.stringify({
       operation: request.params.operation,
       firstNumber: Number(num1),
       secondNumber: Number(num2),
-      total: add(num1, num2)
-    }));
-  } else if (request.params.operation === "sub") {
-    response.send(JSON.stringify({
-      operation: request.params.operation,
-      firstNumber: Number(num1),
-      secondNumber: Number(num2),
-      total: sub(num1, num2)
-    }));
-  } else if (request.params.operation === "mult") {
-    response.send(JSON.stringify({
-      operation: request.params.operation,
-      firstNumber: Number(num1),
-      secondNumber: Number(num2),
-      total: mult(num1, num2)
-    }));
-  } else if (request.params.operation === "div") {
-    response.send(JSON.stringify({
-      operation: request.params.operation,
-      firstNumber: Number(num1),
-      secondNumber: Number(num2),
-      total: div(num1, num2)
+      total: operation(op, num1, num2)
     }));
   } else {
     response.status(400).send("<h1>Error 400: Bad request. Please enter a valid operation such as: add, sub, mult or div.</h1>");
